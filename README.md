@@ -52,4 +52,3 @@ Execution time, CPU usage, and memory consumption were recorded and compared for
 ### 6. Word Frequency Counting:
 
 The system correctly counts the frequency of a specified word or set of words in each file.
-![image](https://github.com/user-attachments/assets/63ec8bae-20de-431c-8f56-2b5ee3bb98de)
