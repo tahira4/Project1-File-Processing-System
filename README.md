@@ -22,6 +22,9 @@ A collection of 7 files from the Calgary Corpus was selected for processing. Eac
 
 ![image](https://github.com/user-attachments/assets/d5b53dc3-10f6-48fa-83ad-32f8238a1d8d)
 
+![image](https://github.com/user-attachments/assets/8cdfebd2-c8ad-41ca-aa3b-bc9d56286229)
+![image](https://github.com/user-attachments/assets/a846fba5-da13-44b0-9ad5-497c4dc3ea48)
+
 
 ### 2. Multiprocessing:
 
