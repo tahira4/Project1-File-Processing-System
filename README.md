@@ -97,7 +97,16 @@ unique_words: A counter for the number of unique words.
 
 The code forks a new child process for each file in the file_wc array.
 Each child process executes the count_word_in_file function to count occurrences of the target word and update the shared memory with unique word counts
-### 5. Evaluation:
+### 5. Unmapping Shared Memory:
+I added the munmap() call at the end of multiprocess_with_shared_memory(). This ensures that the shared memory is released once it's no longer needed. If munmap() fails, it reports the error with perror().
+
+Error Handling: munmap() is wrapped in an error-handling block. If it returns -1, an error is printed using perror("munmap").
+
+Why It’s Important:
+Memory Management: Without munmap(), the shared memory region is not released, leading to memory leaks.
+Good Practice: Always releasing allocated resources ensures the program doesn't consume unnecessary system resources.
+
+### 6. Evaluation:
 
 Both approaches were compared by measuring the time taken for word counting, as well as the CPU and memory usage for each approach.
 
@@ -170,7 +179,65 @@ In summary, this code effectively demonstrates IPC using shared memory by allowi
 
 ### 4. Error Handling:
 
-The system includes error handling for process creation (fork()), thread creation, and IPC setup.
+This system includes error handling for file Opening, memory mapping, process creation (fork()), and IPC setup.
+
+1.  File Opening:
+
+When system attempts to open a file, it also checks if the file pointer is NULL. If it is, then there is an error message using perror() and exit the function.
+![image](https://github.com/user-attachments/assets/aa1fb0f8-2e6e-4116-98cc-2be95a657de1)
+
+2.  Memory Mapping:
+
+When using mmap to create a shared memory segment, System checks if the return value is MAP_FAILED. If it fails, then it prints an error message and exit the program.
+![image](https://github.com/user-attachments/assets/110ea704-b012-4d16-a157-b2371fb11a8c)
+
+3.  Process Creation:
+
+System checks the return value of fork(). If fork() returns a negative value, it indicates that the process creation failed, and it prints an error message and exit the program.
+![image](https://github.com/user-attachments/assets/3a14905d-b3c5-42d3-af73-d6266696795f)
+
+4.  Unmapping Shared Memory:
+
+This system checks if munmap returns -1, which indicates a failure to unmap the shared memory. In that case, you print an error message.
+c
+Copy code
+if (munmap(shared_data, sizeof(SharedData)) == -1) {
+    perror("munmap");
+}
+Recommendations for Improvement
+While your current error handling addresses several critical areas, you could enhance it further. Here are some suggestions:
+
+Graceful Exit:
+
+Instead of using exit(1) on errors, consider returning an error code to the calling function. This allows for cleaner exits and potential logging of errors. In main(), you can then decide how to handle these errors (e.g., clean up resources, log errors).
+Detailed Error Messages:
+
+When printing error messages, include context about where the error occurred. This can be particularly useful for debugging. For example, in your perror messages, include additional context such as which file failed to open.
+Resource Cleanup:
+
+If an error occurs after allocating resources (like shared memory), ensure that you clean up any allocated resources before exiting. For example, if mmap fails after forking some processes, those processes should be waited on and terminated properly.
+Handle Invalid Input:
+
+Validate the input parameters and data. For instance, check if the number of files defined (NUM_FILES) is reasonable, or if the file paths are valid before attempting to open them.
+Signal Handling:
+
+Consider implementing signal handlers for SIGCHLD to handle child termination and other signals gracefully, particularly in a multi-process environment.
+Error Logging:
+
+Instead of just printing errors to the console, consider logging them to a file for later review. This can help in tracking down issues in production environments.
+Example of Enhanced Error Handling
+Here’s a snippet showing enhanced error handling when opening a file:
+
+c
+Copy code
+FILE *file = fopen(file_wc->filepath, "r");
+if (file == NULL) {
+    fprintf(stderr, "Error: Failed to open file '%s': ", file_wc->filepath);
+    perror("fopen");
+    return; // or handle the error accordingly
+}
+Summary
+Your code has a solid foundation for error handling, particularly in critical areas like file operations and memory management. By implementing the recommended improvements, you can make your error handling more robust, informative, and conducive to maintaining the program's stability and reliability.
 ### 5. Performance Metrics:
 
 Execution time, CPU usage, and memory consumption were recorded and compared for both multiprocessing and multithreading approaches.
