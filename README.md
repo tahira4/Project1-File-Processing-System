@@ -89,12 +89,30 @@ The system performance is evaluated by measuring:
 3. Memory Usage: Memory footprint for multiprocessing versus additional overhead from multiple threads.
 #### Results
 
+![image](https://github.com/user-attachments/assets/267cba10-cca3-47ca-82b4-1617d6e28d1e)
 
+### Analysis
 
+#### 1. Execution Time Analysis
+Multiprocessing Only: Completed in 0.008 seconds which indicating high efficiency and fast processing time when only separate processes handle the files.
+Multiprocessing and Multithreading: Took 2.929 seconds. This setup adds complexity, as it splits the task into threads within each process, which introduces overhead from managing multiple threads in parallel. For smaller tasks or I/O-bound processes, this overhead may negate the speed gains.
 
+#### 2. CPU Usage Analysis
+Multiprocessing Only: Reached 173.36% CPU usage, showing high parallelism and effectively utilizing multiple cores to handle independent processes.
+Multiprocessing and Multithreading: Recorded 100.2% CPU usage. This suggests that the threading within each process may not be leveraging CPU resources fully, likely due to thread synchronization overhead or increased contention. This setup could be more advantageous for CPU-bound processes if file sizes were large enough to offset threading overhead.
 
+#### 3. Memory Usage Analysis
+Memory Usage for both methods was 127152 KB (about 127 MB). This suggests that while the memory footprint was significant, there was little to no additional memory requirement when using multithreading. In typical cases, multithreading within processes should result in lower memory overhead than multiprocessing alone because threads within a single process share memory space.
+#### 4. Performance Comparison: Advantages and Disadvantages
+Multiprocessing Only
+Advantages: Fast execution time, higher CPU utilization (parallelism across cores), and efficient handling of independent processes.
+Disadvantages: Higher memory usage in scenarios with large numbers of files, as each process is memory-independent.
 
+Multiprocessing and Multithreading
+Advantages: Threads within processes share memory, potentially reducing overhead with larger data. This can improve scalability for CPU-bound tasks that need shared memory resources.
+Disadvantages: Increased execution time and lower CPU efficiency. Overheads in managing threads, locking mechanisms, and inter-thread communication in I/O-bound processes could lead to inefficiencies.
 
+## Conclusion
 
-
+In this project, Multiprocessing Only proved faster and more CPU-efficient, processing files in parallel with fewer overheads than Multiprocessing + Multithreading. While multithreading can benefit larger, CPU-bound tasks by sharing memory within processes, it added complexity and slowed performance here. Overall, for small to medium I/O-bound tasks, multiprocessing alone is more effective, though larger datasets might benefit from optimized multithreading in the future.
 
