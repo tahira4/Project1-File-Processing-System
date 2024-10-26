@@ -112,7 +112,34 @@ Multiprocessing and Multithreading
 Advantages: Threads within processes share memory, potentially reducing overhead with larger data. This can improve scalability for CPU-bound tasks that need shared memory resources.
 Disadvantages: Increased execution time and lower CPU efficiency. Overheads in managing threads, locking mechanisms, and inter-thread communication in I/O-bound processes could lead to inefficiencies.
 
-## Conclusion
-
 In this project, Multiprocessing Only proved faster and more CPU-efficient, processing files in parallel with fewer overheads than Multiprocessing + Multithreading. While multithreading can benefit larger, CPU-bound tasks by sharing memory within processes, it added complexity and slowed performance here. Overall, for small to medium I/O-bound tasks, multiprocessing alone is more effective, though larger datasets might benefit from optimized multithreading in the future.
+### Diagram :
+#### Diagram 1: Process and Thread Creation Structure
+This diagram depicts how the main (parent) process forks into multiple child processes, with each child handling a separate file. Within each child process, multiple threads are created to handle different segments of the file for parallel word counting.
+Parent Process: Spawns child processes for each file using fork().
+Child Processes: Each child process uses pthread_create() to spawn multiple threads.
+Threads: Each thread processes a section (or "chunk") of the file to count word occurrences, increasing efficiency by processing segments concurrently.
 
+![image](https://github.com/user-attachments/assets/37c8b3e2-dfb2-4242-a382-9d96281b35e5)
+
+#### Diagram 2: Inter-Process Communication (IPC) via Shared Memory
+The following diagram shows how IPC is set up using shared memory. Each child process writes its word count result to shared memory, which the parent process accesses after all child processes complete their execution. This approach provides efficient and synchronized communication of results back to the parent process.
+Shared Memory Segment: A memory region accessible by all processes, allowing each child process to store its word count results.
+Child Processes: After processing their assigned file segments, each child process writes its word count to shared memory.
+Parent Process: Once all children complete execution, the parent process reads from shared memory and aggregates the results for a total word count.
+![image](https://github.com/user-attachments/assets/6b3ce263-4877-47ad-82a3-cc3682a3b7dc)
+
+## Conclusion
+This project demonstrates the use of multiprocessing and multithreading in processing large files efficiently, highlighting the performance differences between the two approaches. In analyzing word frequency across multiple files, Multiprocessing Only emerged as the more efficient approach due to its faster execution time, higher CPU utilization, and simpler design, leveraging independent processes to maximize CPU resources.
+
+### Key Takeaways
+Multiprocessing Only offers fast, parallel execution with each process independently managing a file, which is beneficial for high CPU utilization and is less impacted by context-switching overhead. It resulted in faster processing (0.008 seconds) and higher CPU utilization (173.36%).
+Multiprocessing + Multithreading introduces complexity by managing multiple threads within each process, leading to thread synchronization challenges and increased execution time (2.929 seconds). While potentially advantageous for larger, CPU-bound tasks, in this case, it provided no significant memory or CPU usage benefits for smaller, I/O-bound tasks.
+
+### Performance Comparison
+The study shows that for smaller-scale text processing tasks, Multiprocessing Only is preferable due to its simplicity, speed, and effective parallelism. Multithreading, while sharing memory within a process, can introduce thread management and synchronization overhead, potentially reducing efficiency in I/O-bound tasks.
+
+### Future Considerations
+For larger datasets or tasks that are computationally intensive, further exploration of multiprocessing combined with optimized multithreading may yield better results. Additional optimizations, such as load balancing across threads and tuning thread management, could also improve efficiency in multithreading-based approaches.
+
+This project has provided valuable insights into the trade-offs between multiprocessing and multithreading, especially in contexts where both CPU and I/O operations are involved.
