@@ -82,19 +82,18 @@ The system includes checks for process creation, IPC setup, file access, and thr
  1. Error Handling in fork() for Process Creation: Error handling for fork() ensures that if the process creation fails, a message is printed, and appropriate action is taken.
 ![image](https://github.com/user-attachments/assets/7547675d-b6b1-4834-82fb-6d00df6926e5)
 
-![image](https://github.com/user-attachments/assets/1e4ed6d9-a700-4c97-87f8-091b8b1c835a)
 
-3. Error Handling in pthread_create() for Thread Creation
+2. Error Handling in pthread_create() for Thread Creation
 Error handling in pthread_create() verifies that each thread is successfully created, handling errors where thread creation fails:
-![image](https://github.com/user-attachments/assets/9aa92b68-0aa2-4bec-8815-b2bba9f0346a)
-![image](https://github.com/user-attachments/assets/66c0fc73-886e-48fe-85ea-ae4d35106938)
 
-4. Error Handling for File Access
+![image](https://github.com/user-attachments/assets/d7379573-80be-408b-be81-3a47a6d7c61b)
+
+
+3. Error Handling for File Access
 Proper error handling for file access ensures that the file exists and is accessible. If not, the system should provide a helpful error message:
 ![image](https://github.com/user-attachments/assets/16bf9bb3-067a-42c7-9854-3e61f3138380)
 
-5. Error Handling for Shared Memory Setup
-Setting up shared memory or other IPC mechanisms (e.g., message queues) also requires error handling to ensure that the resources are allocated successfully:
+
 ## Performance Evaluation
 
 The system performance is evaluated by measuring:
@@ -105,6 +104,10 @@ The system performance is evaluated by measuring:
 #### Results
 
 ![image](https://github.com/user-attachments/assets/267cba10-cca3-47ca-82b4-1617d6e28d1e)
+
+![image](https://github.com/user-attachments/assets/055be622-52f3-491a-8647-b8f8b27d637f)
+
+![image](https://github.com/user-attachments/assets/6e0f71d8-2caf-490e-adc2-f94e87369176)
 
 ### Analysis
 
@@ -118,6 +121,9 @@ Multiprocessing and Multithreading: Recorded 100.2% CPU usage. This suggests tha
 
 #### 3. Memory Usage Analysis
 Memory Usage for both methods was 127152 KB (about 127 MB). This suggests that while the memory footprint was significant, there was little to no additional memory requirement when using multithreading. In typical cases, multithreading within processes should result in lower memory overhead than multiprocessing alone because threads within a single process share memory space.
+The same memory usage for both multiprocessing and multithreading modes could result from several factors, including the way shared memory is allocated and reported by getrusage. Here's a breakdown of key reasons:
+Shared Data Structure: In both approaches, the program uses a SharedData structure to hold the word count data. Since the same data structure is accessed either via mmap for multiprocessing or directly in multithreading, the memory usage reflects the space required by this data structure rather than any overhead from additional threads or processes.
+Shared Memory Efficiency: In multiprocessing, the mmap system call allocates memory accessible to all child processes. Thus, each child process shares the mapped region rather than duplicating it. Similarly, threads in multithreading inherently share memory within the process. Therefore, both approaches end up using roughly the same memory for shared data
 #### 4. Performance Comparison: Advantages and Disadvantages
 Multiprocessing Only
 Advantages: Fast execution time, higher CPU utilization (parallelism across cores), and efficient handling of independent processes.
@@ -128,6 +134,7 @@ Advantages: Threads within processes share memory, potentially reducing overhead
 Disadvantages: Increased execution time and lower CPU efficiency. Overheads in managing threads, locking mechanisms, and inter-thread communication in I/O-bound processes could lead to inefficiencies.
 
 In this project, Multiprocessing Only proved faster and more CPU-efficient, processing files in parallel with fewer overheads than Multiprocessing + Multithreading. While multithreading can benefit larger, CPU-bound tasks by sharing memory within processes, it added complexity and slowed performance here. Overall, for small to medium I/O-bound tasks, multiprocessing alone is more effective, though larger datasets might benefit from optimized multithreading in the future.
+
 ### Diagram :
 #### Diagram 1: Process and Thread Creation Structure
 This diagram depicts how the main (parent) process forks into multiple child processes, with each child handling a separate file. Within each child process, multiple threads are created to handle different segments of the file for parallel word counting.
@@ -155,6 +162,7 @@ Multiprocessing + Multithreading introduces complexity by managing multiple thre
 The study shows that for smaller-scale text processing tasks, Multiprocessing Only is preferable due to its simplicity, speed, and effective parallelism. Multithreading, while sharing memory within a process, can introduce thread management and synchronization overhead, potentially reducing efficiency in I/O-bound tasks.
 
 ### Future Considerations
+For future I will consider to add error handling in shared memory usage and setup.
 For larger datasets or tasks that are computationally intensive, further exploration of multiprocessing combined with optimized multithreading may yield better results. Additional optimizations, such as load balancing across threads and tuning thread management, could also improve efficiency in multithreading-based approaches.
 
 This project has provided valuable insights into the trade-offs between multiprocessing and multithreading, especially in contexts where both CPU and I/O operations are involved.
