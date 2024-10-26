@@ -26,6 +26,7 @@ These files are downloaded, extracted, and prepared by excluding unnecessary fil
 Programming Language: C
 
 Libraries:
+![image](https://github.com/user-attachments/assets/b45146e8-9a81-49ff-b796-e97936b96ddc)
 
 Standard C libraries for file handling and memory management.
 
@@ -53,13 +54,14 @@ The project measures key performance metrics, such as execution time, CPU usage,
 
 ## Implementation:
 
-### 1. File Setup:
-
-Calgary folder is saved in Google Drive, I used python to access it.
+ Files: Calgary folder is saved in Google Drive, I used python to access it.
 
 ![image](https://github.com/user-attachments/assets/740cef80-37e6-4de9-9b8b-7f4fbccef2bb)
 
-A collection of 7 files from the Calgary Corpus was selected for processing. Each file was assigned to a separate process.
+
+Multithreading
+![image](https://github.com/user-attachments/assets/8b55fcb0-2274-4c3a-8927-85a5d8e44318)
+![image](https://github.com/user-attachments/assets/8332e5d3-2fdd-4069-b1a0-38e39e6b2548)
 
 ### Code Overview
 The core functionality is implemented in C, utilizing fork() for process creation, POSIX threads for multithreading within each process, and shared memory for IPC. Below is an outline of the system's major components:
@@ -67,16 +69,35 @@ The core functionality is implemented in C, utilizing fork() for process creatio
 #### 1. File Processing: 
 
 Each child process processes one file, creating multiple threads that count the occurrences of a target word within segments of the file.
+A collection of 7 files from the Calgary Corpus was selected for processing. Each file was assigned to a separate process.
+![image](https://github.com/user-attachments/assets/3be0251d-5e07-458b-b04b-d1595226f606)
+![image](https://github.com/user-attachments/assets/4ff8a355-4140-40ee-9b2e-932a9e2d0199)
+Function to count occurrences of a word in a given file, and Buffer to hold each word read
+![image](https://github.com/user-attachments/assets/c7fb117d-59d6-4095-898f-d8fb1b822cec)
+store and sort unique frequencies
+![image](https://github.com/user-attachments/assets/49f7724a-8bb0-4c2c-abc3-828d35263cc1)
 
 #### 2. Thread Creation:
 
 Each thread processes a section of the file, performing word matching to count occurrences of the target word.
+Multithreading
+![image](https://github.com/user-attachments/assets/8b55fcb0-2274-4c3a-8927-85a5d8e44318)
+![image](https://github.com/user-attachments/assets/8332e5d3-2fdd-4069-b1a0-38e39e6b2548)
 
 #### 3. Shared Memory for IPC: 
 
 After counting, each process writes its result to shared memory, which the parent process aggregates and displays.
+#### 4. Multiprocess
+![image](https://github.com/user-attachments/assets/76e64622-26cd-4114-af25-839596fc6c7f)
+![image](https://github.com/user-attachments/assets/5045aead-546a-4ad7-86b5-22620bc90715)
+#### 5. 
+Function to measure perfomance of mulyithreading and multiprocessing
+![image](https://github.com/user-attachments/assets/d68d5714-6953-4c83-9da2-37686ab1600c)
 
-#### 4. Error Handling: 
+#### 6. Main function:
+![image](https://github.com/user-attachments/assets/5a85c7e6-4d93-4b7b-a44b-7ef66e41b06e)
+
+#### 7. Error Handling: 
 
 The system includes checks for process creation, IPC setup, file access, and thread management errors.
  1. Error Handling in fork() for Process Creation: Error handling for fork() ensures that if the process creation fails, a message is printed, and appropriate action is taken.
