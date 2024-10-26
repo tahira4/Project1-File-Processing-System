@@ -111,6 +111,9 @@ Error handling in pthread_create() verifies that each thread is successfully cre
 Proper error handling for file access ensures that the file exists and is accessible. If not, the system should provide a helpful error message:
 ![image](https://github.com/user-attachments/assets/16bf9bb3-067a-42c7-9854-3e61f3138380)
 
+## Execution command 
+![image](https://github.com/user-attachments/assets/aa5fe5c0-411e-4f0a-8d4d-0fa057d3a507)
+
 
 ## Performance Evaluation
 
