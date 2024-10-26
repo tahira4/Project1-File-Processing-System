@@ -58,11 +58,6 @@ The project measures key performance metrics, such as execution time, CPU usage,
 
 ![image](https://github.com/user-attachments/assets/740cef80-37e6-4de9-9b8b-7f4fbccef2bb)
 
-
-Multithreading
-![image](https://github.com/user-attachments/assets/8b55fcb0-2274-4c3a-8927-85a5d8e44318)
-![image](https://github.com/user-attachments/assets/8332e5d3-2fdd-4069-b1a0-38e39e6b2548)
-
 ### Code Overview
 The core functionality is implemented in C, utilizing fork() for process creation, POSIX threads for multithreading within each process, and shared memory for IPC. Below is an outline of the system's major components:
 
@@ -76,6 +71,7 @@ Function to count occurrences of a word in a given file, and Buffer to hold each
 ![image](https://github.com/user-attachments/assets/c7fb117d-59d6-4095-898f-d8fb1b822cec)
 store and sort unique frequencies
 ![image](https://github.com/user-attachments/assets/49f7724a-8bb0-4c2c-abc3-828d35263cc1)
+![image](https://github.com/user-attachments/assets/9a4694cf-f890-4d9a-9737-29133e9cc79f)
 
 #### 2. Thread Creation:
 
