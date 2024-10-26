@@ -79,7 +79,22 @@ After counting, each process writes its result to shared memory, which the paren
 #### 4. Error Handling: 
 
 The system includes checks for process creation, IPC setup, file access, and thread management errors.
+ 1. Error Handling in fork() for Process Creation: Error handling for fork() ensures that if the process creation fails, a message is printed, and appropriate action is taken.
+![image](https://github.com/user-attachments/assets/7547675d-b6b1-4834-82fb-6d00df6926e5)
 
+![image](https://github.com/user-attachments/assets/1e4ed6d9-a700-4c97-87f8-091b8b1c835a)
+
+3. Error Handling in pthread_create() for Thread Creation
+Error handling in pthread_create() verifies that each thread is successfully created, handling errors where thread creation fails:
+![image](https://github.com/user-attachments/assets/9aa92b68-0aa2-4bec-8815-b2bba9f0346a)
+![image](https://github.com/user-attachments/assets/66c0fc73-886e-48fe-85ea-ae4d35106938)
+
+4. Error Handling for File Access
+Proper error handling for file access ensures that the file exists and is accessible. If not, the system should provide a helpful error message:
+![image](https://github.com/user-attachments/assets/16bf9bb3-067a-42c7-9854-3e61f3138380)
+
+5. Error Handling for Shared Memory Setup
+Setting up shared memory or other IPC mechanisms (e.g., message queues) also requires error handling to ensure that the resources are allocated successfully:
 ## Performance Evaluation
 
 The system performance is evaluated by measuring:
