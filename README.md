@@ -69,9 +69,10 @@ A collection of 7 files from the Calgary Corpus was selected for processing. Eac
 ![image](https://github.com/user-attachments/assets/4ff8a355-4140-40ee-9b2e-932a9e2d0199)
 Function to count occurrences of a word in a given file, and Buffer to hold each word read
 ![image](https://github.com/user-attachments/assets/c7fb117d-59d6-4095-898f-d8fb1b822cec)
+![image](https://github.com/user-attachments/assets/9a4694cf-f890-4d9a-9737-29133e9cc79f)
 store and sort unique frequencies
 ![image](https://github.com/user-attachments/assets/49f7724a-8bb0-4c2c-abc3-828d35263cc1)
-![image](https://github.com/user-attachments/assets/9a4694cf-f890-4d9a-9737-29133e9cc79f)
+
 
 #### 2. Thread Creation:
 
